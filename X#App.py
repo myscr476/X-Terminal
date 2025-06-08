@@ -242,6 +242,7 @@ while True:
            print("Starts with new code or set id?")
            sub = input(">>>  ")
            if sub == "Starts with new code":
+           	code_lines = []
            	while True:
            	    code = input("~  ")
            	    if code == "exit":
@@ -249,6 +250,18 @@ while True:
            	    elif code.startswith("printtext "):
            	    	printedtext = code[len("printtext "):].strip()
            	    	print(printedtext)
+           	    	code_lines.append(f'printtext {printedtext}')
+           	    elif code.startswith("save"):
+           	    	filename = code[len("save  "):].strip()
+           	    	try:
+           	    		with open(filename, "w") as f:
+           	    			for line in code_lines:
+           	    			    f.write(len + "\n")
+           	    		print(f"The filename {filename} is created succesfully!")
+           	    	except Exception as e:
+           	    		print(f"{e}")
+           	    else:
+           	    	code_lines.append(code)
            elif sub == "Set id":
            	stepcode = input("---  ")
            	if stepcode.startswith("ID"):
