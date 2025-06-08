@@ -218,10 +218,10 @@ while True:
         else:
             print(f"Installing {pkg_name} via pip...")
             try:
-                subprocess.check_call([sys.executable, "- m", "pip", "install", pkg_name])
-                print("Pkg is installed succesfully!")
-            except subprocess.CalledProcessError:
-                print(f"Failed to install package {pkg_name}.")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", pkg_name])
+                print(f"{pkg_name} is installed succesfully!")
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to install package {pkg_name}: {e}")
                 
     elif command.startswith("alias"):
         aliascm = command[len("alias"):].strip()
