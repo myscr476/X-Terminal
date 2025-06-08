@@ -256,7 +256,7 @@ while True:
            	    	try:
            	    		with open(filename, "w") as f:
            	    			for line in code_lines:
-           	    			    f.write(len + "\n")
+           	    			    f.write(line + "\n")
            	    		print(f"The filename {filename} is created succesfully!")
            	    	except Exception as e:
            	    		print(f"{e}")
