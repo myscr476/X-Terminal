@@ -83,6 +83,7 @@ while True:
             print(f"Error: {e}")
 
     elif command == "dir":
+        os.chdir('/storage/emulated/0')
         print(os.listdir())
 
     elif command == "help":
@@ -252,11 +253,11 @@ while True:
            	    	print(printedtext)
            	    	code_lines.append(f'printtext {printedtext}')
            	    elif code.startswith("save"):
-           	    	filename = code[len("save  "):].strip()
+           	    	filename = code[line("save  "):].strip()
            	    	try:
            	    		with open(filename, "w") as f:
            	    			for line in code_lines:
-           	    			    f.write(line + "\n")
+           	    			    f.write(len + "\n")
            	    		print(f"The filename {filename} is created succesfully!")
            	    	except Exception as e:
            	    		print(f"{e}")
