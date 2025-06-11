@@ -161,7 +161,6 @@ while True:
     elif command == "history":
             for i, cmd in enumerate(history, 1):
             	print(f"{i}. {cmd}")
-            	continue
             	
     elif command == "insta":
         urlin = input("Type URL...  ")
