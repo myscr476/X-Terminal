@@ -52,6 +52,7 @@ commands = [
 ]
 xstatus = "NO"
 windai = "soxca"
+aliases = {}
 
 
 import subprocess
@@ -60,8 +61,15 @@ import sys
 while True:
     command = input("\033[93m~ $\033[0m").strip()
     history.append(command)
+    
+    if command in aliases:
+        aliased_command = aliases[command]
+        print(f"Running alias: {aliased_command}")
+        history.append(aliased_command)
+        command = aliased_command
+        continue
 
-    if command == "break":
+    elif command == "break":
         break
 
     elif command == "joingr":
@@ -208,7 +216,7 @@ while True:
          		time.sleep(random.randint(2,5))
          		xstatus = "True"
          		print("Succesfully installing xeditor!")
-        elif pkg_name == "windai && requirements":
+        elif "windai" in pkg_name and "requirements" in pkg_name:
         	if windai == "SOYES":
         		print("windai is installed.")
         	else:
@@ -225,12 +233,14 @@ while True:
                 print(f"Failed to install package {pkg_name}: {e}")
                 
     elif command.startswith("alias"):
-        aliascm = command[len("alias"):].strip()
-        matched = [command for command in commands if aliascm in commands]
-        if matched:
-                print(f"Command setted for {aliascm}!")
+        parts = command.split(" ", 2)
+        if len(parts) < 3:
+            print("Usage: alias [name] [real command]")
         else:
-                print(f"Unknown alias command: {aliascm}")
+            alias_name = parts[1]
+            real_command = parts[2]
+            aliases[alias_name] = real_command
+            print(f"Alias '{alias_name}' set to '{real_command}'")
                 
     elif command == "whoami":
     	print(f"User: {username}\nID: {userid}")
@@ -257,7 +267,7 @@ while True:
            	    	try:
            	    		with open(filename, "w") as f:
            	    			for line in code_lines:
-           	    			    f.write(len + "\n")
+           	    			    f.write(line + "\n")
            	    		print(f"The filename {filename} is created succesfully!")
            	    	except Exception as e:
            	    		print(f"{e}")
