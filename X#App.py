@@ -9,6 +9,7 @@ from urllib.parse import urlparse, quote, urlencode
 import platform
 import requests
 import random
+import re
 
 username = "local"
 answerrepo = "local-repo"
@@ -48,15 +49,22 @@ commands = [
 	"windai",
 	"sys(info)",
 	"lang",
-	"HOME$previx/$X#"
+	"HOME$previx/$X#",
+	"yes",
+	"ver",
+	"apt update"
 ]
 xstatus = "NO"
 windai = "soxca"
 aliases = {}
+verapt = False
 
 
 import subprocess
 import sys
+
+print("Welcome to X# Interpreter.")
+print("Type 'help' for help.")
 
 while True:
     command = input("\033[93m~ $\033[0m").strip()
@@ -67,7 +75,6 @@ while True:
         print(f"Running alias: {aliased_command}")
         history.append(aliased_command)
         command = aliased_command
-        continue
 
     elif command == "break":
         break
@@ -176,7 +183,9 @@ while True:
            print("Error:", e)
            
     elif command == "clear":
-        os.system("clear")
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Welcome to X# Interpreter.")
+        print("Type 'help' for help.")
         
     elif command.startswith("setname"):
         new_name = command[len("setname"):].strip()
@@ -191,6 +200,10 @@ while True:
         
         if not pkg_name:
             print("Please provide a pkg name. (example: pkg install jvrun)")
+            continue
+        elif not re.match(r'^[a-zA-Z0-9_]+$', pkg_name):
+            print("Invalid package name. Avoid special characther for security.")
+            continue
         elif pkg_name == "jvrun":
             if pkginstaller == "yes":
                 print("jvrun is installed.")
@@ -262,7 +275,7 @@ while True:
            	    	print(printedtext)
            	    	code_lines.append(f'printtext {printedtext}')
            	    elif code.startswith("save"):
-           	    	filename = code[line("save  "):].strip()
+           	    	filename = code[len("save "):].strip()
            	    	try:
            	    		with open(filename, "w") as f:
            	    			for line in code_lines:
@@ -288,11 +301,11 @@ while True:
     		print("Welcome to WindAI!")
     		while True:
     			ai = input(f"{username}: ")
-    			if ai == "Hello":
+    			if ai.lower() == "Hello":
     				print("WindAI: Hello! What can i help you?")
     			elif ai == "exit":
     				break
-    			elif ai == "who is the real dev":
+    			elif ai.lower() == "who is the real dev":
     				print("WindAI: The real dev is Athaya.")
     			else:
     				print("WindAI: Sorry. but i can't help you with it. but i will more understand with this topic!")
@@ -313,7 +326,30 @@ while True:
     	hom = input("<<<  ")
     	if hom == "<info>":
     		print("\nDEV: ATHAYA\nAPP USED: PYDROID 3")
-    	
+    		
+    elif command == "yes":
+    	while True:
+    	    print("y")
+    	    
+    elif command == "ver":
+        print("Version 2.5.1.")
+        
+    elif command == "apt update":
+        if verapt:
+            print("Apt is updated to new version.")
+        else:
+           print("Building dependency tree...")
+           time.sleep(2)
+           print("...Done\nUpdating pkg...")
+           time.sleep(1)
+           print("...Done\nDone.")
+           verapt = True
+           
+    elif command == "apt":
+        if verapt:
+            print("APT status: updated")
+        else:
+            print("APT status: non-updated")
 
     else:
     	suggestions = [c for c in commands if command in c]
